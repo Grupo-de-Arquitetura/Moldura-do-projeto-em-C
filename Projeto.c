@@ -1,7 +1,5 @@
-#import <stdio.h>
-#import <stdlib.h>
-#import <string.h>
-
+#include <stdio.h>
+#include <stdlib.h>
 typedef struct {
     char nome[50];
 } morador;
@@ -70,7 +68,7 @@ void carregarApartamentos(condominio *cond) {
 void digitarApartamento(apartamento *apto) {
 
     printf("\nNumero do Apartamento: %i\n", apto -> numeroDoApartamento);
-    apto.m
+    
 
     printf("Moradores: \n");
 
@@ -116,7 +114,7 @@ apartamento *buscarApartamento(condominio *cond, char unsigned numero) {
 
     while (finalizar == 0) {
         media = (comeco + final)/2;
-        printf("%i, %i\n", comeco, final);
+
         if (comeco+1 == final) {
             if (cond -> apartamentos[comeco].numeroDoApartamento == numero) {
                 return &cond -> apartamentos[comeco];
@@ -150,8 +148,12 @@ void infoApartamento(condominio *cond, char unsigned numero) {
 
 void registrarMorador(char *nome,condominio *cond, char unsigned numeroDoApartamento) {
     apartamento *apto = buscarApartamento(cond, numeroDoApartamento);
-    copiarString(nome,apto -> morador[apto -> numeroDeMoradores]);
-    apto
+    if(apto -> numeroDeMoradores == 5){
+        printf("Operacao invalida, o apartamento esta cheio");
+    } else{
+        copiarString(nome, &apto -> morador[apto -> numeroDeMoradores]);
+        apto -> numeroDeMoradores++;
+    }
 }
 
 
@@ -170,4 +172,7 @@ int main() {
     // infoGeral(&cond);
 
     // infoApartamento(&cond, 134);
+
+    registrarMorador("Danilo de Padua", &cond,  11);
+    infoApartamento(&cond, 12);
 }
