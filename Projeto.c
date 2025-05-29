@@ -24,14 +24,15 @@ typedef struct {
 } condominio;
 
 
-void *copiarString(char *origem, char *destino) {
-    char *retorno = *destino;
-
-    while (*origem != "\O") {
-        *origem = *destino;
-        *origem++;
-        *destino++;
+void *copiarString(char *destino, char *origem) {
+    char *retorno = destino;
+    char i = 0;
+    while (origem[i] != '\0') {
+        destino[i] = origem[i];
+        i++;
     }
+
+    retorno[i] = '\0';
 
     return retorno;
 }
@@ -151,7 +152,7 @@ void registrarMorador(char *nome,condominio *cond, char unsigned numeroDoApartam
     if(apto -> numeroDeMoradores == 5){
         printf("Operacao invalida, o apartamento esta cheio");
     } else{
-        copiarString(nome, &apto -> morador[apto -> numeroDeMoradores]);
+        copiarString(nome, apto -> morador[apto -> numeroDeMoradores].nome);
         apto -> numeroDeMoradores++;
     }
 }
