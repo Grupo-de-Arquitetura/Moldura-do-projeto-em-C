@@ -66,9 +66,9 @@ void carregarApartamentos(condominio *cond) {
         if(numero == 4) {
             numero = 1;
             andar += 10;
+        } else{
+            numero++;
         }
-
-        numero++;
     }
 
     printf("\n\n");
@@ -148,7 +148,7 @@ void digitarApartamento(apartamento *apto) {
 //              Buscar informações dos Apartamentos
 
 void infoGeral(condominio *cond) {
-    for (int i = 1; i <= 40; i++) {
+    for (int i = 1; i <= 21; i++) {
         digitarApartamento(&cond -> apartamentos[i]);
     }
 }
@@ -159,12 +159,12 @@ apartamento *buscarApartamento(condominio *cond, char unsigned aptoNum) {
     char final = 40;
     char media;
 
-    printf("\n\nBusca: \n\n");
-
     while (finalizar == 0) {
         media = (comeco + final)/2;
 
-        printf("Inicio: %i, Final: %i, Media %i\n", comeco, final, media);
+        char unsigned numeroComeco = cond -> apartamentos[comeco].numeroDoApartamento;
+        char unsigned numeroFinal = cond -> apartamentos[final].numeroDoApartamento;
+
         if (comeco+1 == final) {
             if (cond -> apartamentos[comeco].numeroDoApartamento == aptoNum) {
                 return &cond -> apartamentos[comeco];
@@ -254,8 +254,6 @@ void registrarVeiculo(char tipo, char *modelo, char *cor, condominio *cond, char
         } else{
             apto -> numeroDeMotos++;
         }
-
-        printf("\n\n Veiculos: %i, Carros: %i, Motos: %i \n\n", apto -> numeroDeVeiculos, apto -> numeroDeCarros, apto -> numeroDeMotos);
     }
 }
 
@@ -311,18 +309,8 @@ void removerMorador(char *nome, condominio *cond, char aptoNum){
         verificado = compararString(nome, apto -> moradores[i].nome);
         if( verificado == 0){
 
-            if(apto -> numeroDeMoradores == 1){
-                limparApartamento(cond, aptoNum);
-            } else {
-
-                for(int j = i; j < apto -> numeroDeMoradores; j++){
-                    apto -> moradores[j] = apto -> moradores[j+1];
-                }
-
-                apto -> numeroDeMoradores--;
-            }
-             
-             i = apto -> numeroDeMoradores;
+            apto -> moradores[i] = apto -> moradores[apto -> numeroDeMoradores -1];
+            apto -> numeroDeMoradores--;
         }
     }
 
@@ -378,7 +366,18 @@ void relatorioApartamentosOcupados(condominio *cond){
     printf("\nApartamentos ocupados: %i \nApartamentos desocupados: %i", aux, 40-aux);
 }
 
+void formatar(condominio *cond){
 
+    for(int i = 1; i <= 40; i++){
+        if(cond -> apartamentos[i].numeroDeMoradores > 0){
+            limparApartamento(cond, cond -> apartamentos[i].numeroDoApartamento);
+        }
+
+        if(cond -> numeroDeApartamentosOcupados == 0){
+            i = 41;
+        }
+    }
+}
 
 
 
@@ -411,17 +410,23 @@ int main() {
 
     // registrarVeiculo('m', "Honda CB1000RR", "Azul", &cond, 11);
 
-    infoApartamento(&cond, 11);
-    infoApartamento(&cond, 21);
-    infoApartamento(&cond, 31);
-    infoApartamento(&cond, 41);
-    infoApartamento(&cond, 51);
-    infoApartamento(&cond, 61);
+    // infoApartamento(&cond, 11);
+    // infoApartamento(&cond, 21);
+    // infoApartamento(&cond, 31);
+    // infoApartamento(&cond, 41);
+    // infoApartamento(&cond, 51);
+    // infoApartamento(&cond, 61);
 
     // removerMorador("Daniel Feitosa", &cond, 11);
     // removerVeiculo('m', "MT-10", "Verde", &cond, 11);
 
-    relatorioApartamentosOcupados(&cond);
+    // relatorioApartamentosOcupados(&cond);
 
     // printf("Resultado: %i", compararStrings("Rodrizo", "Rodri"));
+
+    infoGeral(&cond);
+
+    formatar(&cond);
+
+    infoGeral(&cond);
 }
